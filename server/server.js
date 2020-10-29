@@ -24,19 +24,23 @@ returnObj = {
   description: 'desc',
 };
 
+function convert(kelvin) {
+  return Math.round((kelvin - 273.15) * (9 / 5) + 32);
+}
+
 function getWeather(req, res) {
   request(
     `http://api.openweathermap.org/data/2.5/weather?q=${city}&appid=cdeafd4bac68787f2bfae43a45a24006`,
     { json: true },
-    (err, req, body) => {
+    (err, resp, body) => {
       if (err) {
         return console.log(err);
       }
       returnObj.name = body.name;
-      returnObj.temperature = body.main.temp; //DO CONVERSION
-      returnObj.feelsLike = body.main.feels_like; //DO CONVERSION
+      returnObj.temperature = convert(body.main.temp); //DO CONVERSION
+      returnObj.feelsLike = convert(body.main.feels_like); //DO CONVERSION
       returnObj.description = body.weather[0].description;
-      return returnObj;
+      res.json(returnObj);
     }
   );
 }
