@@ -1,13 +1,13 @@
 const express = require('express');
-// const cors = require('cors');
+const cors = require('cors');
 const request = require('request');
 
 const app = express();
-// app.use(cors());
 
 const PORT = process.env.PORT || 5000;
 
 app.listen(PORT, () => console.log(`server started on port ${PORT}`));
+app.use(cors());
 
 let city;
 const addQuery = (req, res, next) => {
@@ -34,7 +34,7 @@ function getWeather(req, res) {
     { json: true },
     (err, resp, body) => {
       if (err) {
-        return console.log(err);
+        console.log(err);
       }
       returnObj.name = body.name;
       returnObj.temperature = convert(body.main.temp); //DO CONVERSION
